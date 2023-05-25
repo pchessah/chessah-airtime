@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'lib-landing',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent {
+
+  constructor(private _router:Router){
+
+  }
+
+  goTo(page: "signup" | "login"){
+    this._router.navigateByUrl("/pages/"+page);
+  }
 
 }

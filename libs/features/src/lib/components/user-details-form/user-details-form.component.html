@@ -1,1 +1,53 @@
-<p>user-details-form works!</p>
+<div class="page-container">
+  <div class="form-container">
+    <span> <img src="assets/login.svg" alt="auth" /></span>
+    <span class="title">{{title}}</span>
+
+    <section class="form-field-container">
+
+      <mat-label>Email*</mat-label>
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="john@mail.com">
+      </mat-form-field>
+    </section>
+
+    <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
+      <mat-label>Phone Number*</mat-label>
+      <mat-form-field appearance="outline">
+        <input type="number" matInput placeholder="0702123456">
+      </mat-form-field>
+    </section>
+
+    <section class="form-field-container">
+      <mat-label>Password*</mat-label>
+      <mat-form-field appearance="outline">
+        <input type="password" matInput placeholder="***********">
+      </mat-form-field>
+    </section>
+
+
+    <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
+      <mat-label>Confirm Password*</mat-label>
+      <mat-form-field appearance="outline">
+        <input type="password" matInput placeholder="***********">
+      </mat-form-field>
+    </section>
+
+
+    <button color="primary" mat-raised-button>{{title}}</button>
+
+    <span class="or">Or</span>
+
+    <span class="alternative-text">
+      <ng-container *ngIf="sectionUsed === 'signup'">
+        Log in <span (click)="goTo('login')">Here</span>
+      </ng-container>
+
+      <ng-container *ngIf="sectionUsed === 'login'">
+        Not a member yet? Sign up <span (click)="goTo('signup')" >Here</span>
+      </ng-container>
+
+    </span>
+  </div>
+
+</div>

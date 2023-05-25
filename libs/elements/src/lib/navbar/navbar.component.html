@@ -1,5 +1,6 @@
 <mat-toolbar color="primary">
-  <span><img class="logo" src="assets/mpesa.png" alt="mpesa-logo" /></span>
-  <span class="login">LogIn/SignUp</span>
- 
+  <span class="logo-container" (click)="goTo('')"><img  class="logo" src="assets/mpesa.png" alt="mpesa-logo" /></span>
+  <div class="action">
+    <button (click)="goTo('login')"  mat-raised-button class="login">LogIn</button>
+  </div>
 </mat-toolbar>

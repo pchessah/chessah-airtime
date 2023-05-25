@@ -46,4 +46,21 @@
 .welcome-section button{
   width: 50vw;
   padding: 25px 0;
+  font-weight: 600;
+}
+
+.welcome-section button:hover{
+  background-color: white !important;
+  color: #673AB6;
+}
+
+.welcome-section .or{
+  font-size: 12px;
+}
+
+.welcome-section .login-text{
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
 }

@@ -7,6 +7,8 @@
     <span class="welcome-text">
       Welcome To Your One Stop shop to transfer Airtime
     </span>
-    <button color="primary" mat-raised-button>Get Started</button>
+    <button (click)="goTo('signup')"color="primary" mat-raised-button>Get Started</button>
+    <span class="or">Or</span>
+    <span (click)="goTo('login')" class="login-text">Log In here</span>
   </section>
 </div>

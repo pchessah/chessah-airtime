@@ -1,13 +1,36 @@
-.login{
-  font-size: 12px;
-}
-
 .logo{
   width: 50px;
   height: 50px;
 }
 
+.logo-container{
+  cursor:pointer;
+  padding: 0 10px;
+}
+
+.logo-container:hover{
+  background-color: #fff;
+  border-radius: 5px;
+  cursor:pointer;
+}
+
 mat-toolbar{
   display: flex;
   justify-content: space-between;
+}
+
+.action button{
+  font-size: 10px;
+  marggin-right: 5px;
+}
+
+.action{
+  font-size: 8px;
+}
+
+.action span{
+  font-size: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 5px;
 }
