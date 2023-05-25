@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
-import { ElementsComponent } from './elements.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ExternalModule } from 'libs/external/src/public-api';
 
 
 
 @NgModule({
   declarations: [
-    ElementsComponent
+    NavbarComponent
   ],
   imports: [
+    ExternalModule
   ],
   exports: [
-    ElementsComponent
+    NavbarComponent
   ]
 })
 export class ElementsModule { }

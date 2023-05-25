@@ -12,6 +12,9 @@
       "elements": [
         "dist/elements"
       ],
+      "external": [
+        "dist/external"
+      ],
       "features": [
         "dist/features"
       ],

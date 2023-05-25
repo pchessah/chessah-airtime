@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
-import { FeaturesComponent } from './features.component';
+import { LandingComponent } from './pages/landing/landing.component';
+import { ExternalModule } from 'libs/external/src/public-api';
+import { FeaturesRoutingModule } from './features.routing.module';
+
 
 
 
 @NgModule({
-  declarations: [
-    FeaturesComponent
+  declarations: [LandingComponent
+    
   ],
   imports: [
+    ExternalModule,
+    FeaturesRoutingModule
   ],
-  exports: [
-    FeaturesComponent
+  exports: [LandingComponent
+    
   ]
 })
 export class FeaturesModule { }
