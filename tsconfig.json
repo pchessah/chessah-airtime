@@ -9,6 +9,9 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "paths": {
+      "features": [
+        "dist/features"
+      ],
       "interfaces": [
         "dist/interfaces"
       ],
