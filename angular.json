@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "libs",
   "projects": {
     "chessah-airtime": {
       "projectType": "application",
@@ -99,6 +99,42 @@
           }
         }
       }
+    },
+    "interfaces": {
+      "projectType": "library",
+      "root": "libs/interfaces",
+      "sourceRoot": "libs/interfaces/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "libs/interfaces/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/interfaces/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/interfaces/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "libs/interfaces/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
     }
+  },
+  "cli": {
+    "analytics": "56626849-3ce1-4e77-bde5-e00fc1692af1"
   }
 }
