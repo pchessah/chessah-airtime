@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, Input, Output, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Component({
@@ -7,7 +7,10 @@ import { Router } from "@angular/router";
   styleUrls: ["./user-details-form.component.css"],
 })
 export class UserDetailsFormComponent {
+
   @Input({ required: true }) sectionUsed: "signup" | "login" = "signup";
+  @Output() submitFormEvent: EventEmitter<any> = new EventEmitter();//TODO: add type for form object
+ 
   title: "Sign Up" | "Log In" = "Sign Up";
 
   constructor(private _router: Router) {
@@ -31,5 +34,9 @@ export class UserDetailsFormComponent {
 
   goTo(page:"signup" | "login"){
     this._router.navigateByUrl(`pages/${page}`);
+  }
+
+  submitForm(){
+    this.submitFormEvent.emit();
   }
 }

@@ -6,9 +6,10 @@ import { UserDetailsFormComponent } from "./components/user-details-form/user-de
 import { SignupComponent } from "./pages/signup/signup.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { CommonModule } from "@angular/common";
+import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 @NgModule({
-  declarations: [LandingComponent, UserDetailsFormComponent, SignupComponent, LoginComponent],
+  declarations: [LandingComponent, UserDetailsFormComponent, SignupComponent, LoginComponent, DashboardComponent],
   imports: [CommonModule,ExternalModule, FeaturesRoutingModule],
-  exports: [LandingComponent, UserDetailsFormComponent, SignupComponent, LoginComponent],
+  exports: [LandingComponent, UserDetailsFormComponent, SignupComponent, LoginComponent, DashboardComponent],
 })
 export class FeaturesModule {}
