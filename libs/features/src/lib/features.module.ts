@@ -8,6 +8,7 @@ import { LoginComponent } from "./pages/login/login.component";
 import { CommonModule } from "@angular/common";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import { AmountFormComponent } from "./components/amount-form/amount-form.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 @NgModule({
   declarations: [
     LandingComponent,
@@ -17,7 +18,8 @@ import { AmountFormComponent } from "./components/amount-form/amount-form.compon
     DashboardComponent,
     AmountFormComponent
   ],
-  imports: [CommonModule, ExternalModule, FeaturesRoutingModule],
+  imports: [CommonModule, ExternalModule, FeaturesRoutingModule, FormsModule, ReactiveFormsModule],
+
   exports: [
     LandingComponent,
     UserDetailsFormComponent,

@@ -12,6 +12,7 @@ export class LoginComponent {
   }
 
   submitForm(data:any){
+    debugger
     this._router.navigateByUrl(`pages/dashboard`);
   }
 

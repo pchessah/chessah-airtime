@@ -1,5 +1,5 @@
 <div class="page-container">
-  <div class="form-container">
+  <div [formGroup]="userDetailsForm"  class="form-container">
     <span> <img src="assets/login.svg" alt="auth" /></span>
     <span class="title">{{title}}</span>
 
@@ -7,34 +7,39 @@
 
       <mat-label>Email*</mat-label>
       <mat-form-field appearance="outline">
-        <input matInput placeholder="john@mail.com">
+        <input type="email" matInput placeholder="john@mail.com" formControlName="email">
       </mat-form-field>
+      <span *ngIf="fieldIsInvalid('email')" class="error">Email is required/Invalid</span>
     </section>
 
     <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
       <mat-label>Phone Number*</mat-label>
       <mat-form-field appearance="outline">
-        <input type="number" matInput placeholder="0702123456">
+        <input type="number" matInput placeholder="0702123456" formControlName="phone">
       </mat-form-field>
+      <span *ngIf="fieldIsInvalid('phone')" class="error">Phone number is required</span>
     </section>
 
     <section class="form-field-container">
       <mat-label>Password*</mat-label>
       <mat-form-field appearance="outline">
-        <input type="password" matInput placeholder="***********">
+        <input type="password" matInput placeholder="***********" formControlName="password">
       </mat-form-field>
+      <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
+      <span *ngIf="fieldIsInvalid('password')" class="error-2">Password is invalid</span>
     </section>
 
 
     <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
       <mat-label>Confirm Password*</mat-label>
       <mat-form-field appearance="outline">
-        <input type="password" matInput placeholder="***********">
+        <input type="password" matInput placeholder="***********" formControlName="password2">
       </mat-form-field>
+      <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
+      <span *ngIf="fieldIsInvalid('password2')" class="error-2">Confirm password is invalid</span>
     </section>
 
-
-    <button (click)="submitForm()" color="primary" mat-raised-button>{{title}}</button>
+    <button [disabled]="userDetailsForm.invalid" (click)="submitForm()" color="primary" mat-raised-button>{{title}}</button>
 
     <span class="or">Or</span>
 

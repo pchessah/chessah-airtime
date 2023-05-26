@@ -1,4 +1,4 @@
-<div class="form-container">
+<div [formGroup]="amountForm" class="form-container">
   <img title="image" class="img" [src]="getImageSrc()" [alt]="title" />
   <span (click)="close()" class="close-icon"><mat-icon>cancel</mat-icon></span>
   <span class="title">{{title}}</span>
@@ -16,27 +16,27 @@
   <section *ngIf="transferMode === 'email' && type === 'makeTransfer' " class="form-field-container">
     <mat-label>Email*</mat-label>
     <mat-form-field appearance="outline">
-      <input matInput placeholder="john@mail.com">
+      <input matInput placeholder="john@mail.com" formControlName="email">
     </mat-form-field>
   </section>
 
   <section *ngIf="transferMode === 'phone' || type === 'topup'" class="form-field-container">
     <mat-label>Phone Number*</mat-label>
     <mat-form-field appearance="outline">
-      <input type="number" matInput placeholder="0702123456">
+      <input type="number" matInput placeholder="0702123456" formControlName="phone">
     </mat-form-field>
   </section>
 
   <section class="form-field-container">
     <mat-label>Amount*</mat-label>
     <mat-form-field appearance="outline">
-      <input type="number" matInput placeholder="20">
+      <input type="number" matInput placeholder="20" formControlName="amount">
     </mat-form-field>
   </section>
 
   <div class="btn-container">
     <button (click)="close()"mat-stroked-button color="warn">Cancel</button>
-    <button mat-raised-button color="primary">Submit</button>
+    <button (click)="close(amountForm.value)" [disabled]="amountForm.invalid" mat-raised-button color="primary">Submit</button>
   </div>
 
 

@@ -49,9 +49,23 @@ mat-label{
   font-size: 10px;
 }
 
+.error{
+  align-self: flex-start;
+  font-size: 8px;
+  color: red;
+  margin-top: -20px;
+}
+
+.error-2{
+  align-self: flex-start;
+  font-size: 8px;
+  color: red;
+}
+
 span img{
   width: 70px;
   height: 70px;
+  margin-top: -12px;
 }
 
 .form-container button:hover{
