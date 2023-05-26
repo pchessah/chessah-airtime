@@ -7,9 +7,24 @@ import { SignupComponent } from "./pages/signup/signup.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { CommonModule } from "@angular/common";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
+import { AmountFormComponent } from "./components/amount-form/amount-form.component";
 @NgModule({
-  declarations: [LandingComponent, UserDetailsFormComponent, SignupComponent, LoginComponent, DashboardComponent],
-  imports: [CommonModule,ExternalModule, FeaturesRoutingModule],
-  exports: [LandingComponent, UserDetailsFormComponent, SignupComponent, LoginComponent, DashboardComponent],
+  declarations: [
+    LandingComponent,
+    UserDetailsFormComponent,
+    SignupComponent,
+    LoginComponent,
+    DashboardComponent,
+    AmountFormComponent
+  ],
+  imports: [CommonModule, ExternalModule, FeaturesRoutingModule],
+  exports: [
+    LandingComponent,
+    UserDetailsFormComponent,
+    SignupComponent,
+    LoginComponent,
+    DashboardComponent,
+    AmountFormComponent
+  ],
 })
 export class FeaturesModule {}

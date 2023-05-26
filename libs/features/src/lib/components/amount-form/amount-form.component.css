@@ -1,0 +1,42 @@
+.form-container .title{
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align:center;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.form-container{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-field-container{
+  display: contents;
+  width: 80%;
+  font-size: 12px;
+}
+
+img{
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
+  align-self: center;
+}
+
+.btn-container{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.close-icon{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}

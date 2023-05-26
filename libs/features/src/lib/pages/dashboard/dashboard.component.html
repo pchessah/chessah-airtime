@@ -7,11 +7,11 @@
   <div class="dashboard-actions">
 
     <section class="amount-section">
-      <button color="accent" mat-raised-button> Top up Amount</button>
+      <button (click)="openDialog('topup')" color="accent" mat-raised-button> Top up Amount</button>
     </section>
 
     <section class="make-transfer-section">
-      <button color="primary" mat-raised-button>Make Transfer</button>
+      <button (click)="openDialog('makeTransfer')" color="primary" mat-raised-button>Make Transfer</button>
     </section>
 
   </div>
