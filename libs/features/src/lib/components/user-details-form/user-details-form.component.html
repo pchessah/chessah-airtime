@@ -26,7 +26,7 @@
           <input type="password" matInput placeholder="***********" formControlName="password">
         </mat-form-field>
         <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
-        <span *ngIf="fieldIsInvalid('password')" class="error-2">Password is invalid</span>
+        <span *ngIf="fieldIsInvalid('password') && !passwordErr.length" class="error-2">Password is required</span>
       </section>
   
   
@@ -36,7 +36,7 @@
           <input type="password" matInput placeholder="***********" formControlName="password2">
         </mat-form-field>
         <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
-        <span *ngIf="fieldIsInvalid('password2')" class="error-2">Confirm password is invalid</span>
+        <span *ngIf="fieldIsInvalid('password2') && !passwordErr.length" class="error-2">Confirm password is required</span>
       </section>
   
       <button [disabled]="userDetailsForm.invalid" (click)="submitForm()" color="primary" mat-raised-button>{{title}}</button>
