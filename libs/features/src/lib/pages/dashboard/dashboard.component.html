@@ -1,22 +1,56 @@
 <div class="page-container">
-  <span> <img src="assets/dashboard.svg" alt="auth" /></span>
-  <span class="title">Dashboard</span>
-  <div class="total">
+  <span class="animate"> <img src="assets/dashboard.svg" alt="auth" /></span>
+  <span class="title animate">Dashboard</span>
+  <div class="total animate">
     Your Total: <span *ngIf="total$ | async as total; else noAmount" class="amount">Ksh. {{total}}</span>
   </div>
-  <div class="dashboard-actions">
+  <div class="dashboard-actions animate">
 
-    <section class="amount-section">
+    <section class="amount-section animate">
       <button [disabled]="isLoading" (click)="openDialog('topup')" color="accent" mat-raised-button> Top up
         Amount</button>
     </section>
 
-    <section class="make-transfer-section">
+    <section class="make-transfer-section animate">
       <button [disabled]="isLoading" *ngIf="total$ | async as total; else noMoneyTemplate"
         (click)="openDialog('makeTransfer', total)" color="primary" mat-raised-button>Make Transfer</button>
     </section>
 
   </div>
+  <ng-container *ngIf="transfers$ |async as transfers">
+
+    <span class="title transfers-title animate">Transfers</span>
+    <div *ngIf="transfers.length > 0" class="dashboard-table animate">
+      <table mat-table [dataSource]="transfers">
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date of transfer </th>
+          <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+        </ng-container>
+
+        <!-- Recpient mail/phone Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef> Phone/Email </th>
+          <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let element"> Ksh. {{element.amount}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+
+
+    </div>
+
+  </ng-container>
+
 </div>
 
 <ng-template #noAmount>

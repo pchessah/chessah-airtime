@@ -1,6 +1,7 @@
 import { Component, Inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { IUser } from "libs/interfaces/src/public-api";
 import { AuthService } from "libs/state/src/lib/auth/auth.service";
 import { filter, switchMap } from "rxjs/operators";
 import { SubSink } from "subsink";
@@ -21,10 +22,11 @@ export class AmountFormComponent {
   total: number = 0;
   cannotMakeTransfer: boolean = false;
   sameUserError: boolean = false;
+  users: IUser[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    data: { type: "topup" | "makeTransfer"; total: number },
+    data: { type: "topup" | "makeTransfer"; total: number, users:IUser[]},
     private _authService: AuthService,
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<AmountFormComponent>
@@ -37,6 +39,7 @@ export class AmountFormComponent {
           this.currentUser = user;
           this.type = data.type;
           this.total = data.total;
+          this.users = data.users;
           this._setUpForm(data.type);
           this.isLoading = false;
           return this.amountForm.valueChanges;
@@ -113,6 +116,17 @@ export class AmountFormComponent {
   }
 
   close(data = null) {
+    if(!!data && this.type == "makeTransfer"){
+      const user = this.users.find(
+        (u: IUser) =>
+          u.email === (data as any).email || u.phone === (data as any).phone
+      );
+
+      if(!user){
+        window.alert( "⛔️User does not exist. Cannot make transfer.");
+        return
+      }
+    }
     this._dialogRef.close(data);
   }
 }

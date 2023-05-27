@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import { AmountFormComponent } from '../../components/amount-form/amount-form.component';
+import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { TopUpService } from 'libs/state/src/lib/topup/topup.service';
-import { Observable } from 'rxjs';
 import { ITopup } from 'libs/interfaces/src/lib/transfers/topup.interface';
 import { TransfersService } from 'libs/state/src/lib/transfers/transfers.service';
+import { AmountFormComponent } from '../../components/amount-form/amount-form.component';
+import { ITransfer } from 'libs/interfaces/src/lib/transfers/transfers.interface';
+import { IUser } from 'libs/interfaces/src/public-api';
 
 @Component({
   selector: 'lib-dashboard',
@@ -17,8 +19,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   
   private _sbs = new SubSink();
   isLoading = true;
-  total$!:Observable<number>
+  total$!:Observable<number>;
+  transfers$!:Observable<ITransfer[]>;
   topUps:ITopup[] = [];
+  displayedColumns: string[] = ['date', 'phone', 'amount'];
+  users: IUser[] = [];
 
   constructor(private _dialog:MatDialog,
               private _transfersService: TransfersService,
@@ -30,14 +35,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const total = this.topUps.map(t => t.amount).reduce((a,b) => a + b, 0);
       this.isLoading = false;
       return total;
-    }))
+    }));
+
+    this.transfers$ = this._transfersService.getTransfers().pipe(map((transfers) =>{
+      return transfers.map(t => {
+        const formattedTransfer = {
+          date: new Date((t as any).timeStamp.seconds * 1000).toLocaleDateString(),
+          contact: (t as any)?.recepientPhone ?? (t as any)?.recepientEmail,
+          amount: (t as any)?.amount
+        }
+        return formattedTransfer as any;
+      });
+    }));
+
+    this._sbs.sink = this._transfersService.getUsers().subscribe(users =>{
+      this.users = users;
+    });
   }
 
   openDialog(type: 'topup' | 'makeTransfer' , total: number = 0){
     const ref = this._dialog.open(AmountFormComponent, {
       width: '550px',
       maxWidth: '95vw',
-      data:{type: type, total:total},
+      data:{type: type, total:total, users:this.users},
       disableClose: true
     });
 

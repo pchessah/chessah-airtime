@@ -15,6 +15,16 @@ export class TransfersService {
     private _topUpservice: TopUpService
   ) {}
 
+  getTransfers(){
+    return this._authService.userAuthStatus().pipe(switchMap(user =>{
+      return  this.db.collection(`users/${user?.uid}/transfers`).valueChanges();
+    }))
+  }
+
+  getUsers (){
+    return this._authService.getUsers()
+  }
+
   doTransfer(amount: number, recepient: { phone: number; email: string }) {
     //Get list of all users
     return this._authService.getUsers().pipe(
@@ -28,7 +38,6 @@ export class TransfersService {
               u.email === recepient.email || u.phone === recepient.phone
           );
           if (!user) {
-            window.alert("User does not exist, cannot make transfer.");
             return;
           }
           return user;

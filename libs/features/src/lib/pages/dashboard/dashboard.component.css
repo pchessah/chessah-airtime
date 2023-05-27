@@ -1,4 +1,4 @@
-.dashboard-actions {
+.dashboard-actions, .dashboard-table {
   padding: 30px;
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
@@ -10,14 +10,26 @@
   flex-wrap: wrap;
 }
 
+.dashboard-table{
+  margin-top: 10px;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
 .page-container {
-  margin-top: -150px !important;
+  margin-top: -80px !important;
 }
 
 .title {
   font-size: 25px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+
+.transfers-title{
+  margin-top: 15px;
 }
 
 .total{
@@ -48,9 +60,13 @@ span img {
   height: 80px;
 }
 
+td, th{
+  text-align: center;
+}
+
 @media (min-width: 320px) {
   /* smartphones, iPhone, portrait 480x320 phones */
-  .dashboard-actions {
+  .dashboard-actions, .dashboard-table {
     width: calc(100% - 10px);
     margin-left: 5px;
     margin-right: 5px;
@@ -58,32 +74,32 @@ span img {
 }
 @media (min-width: 481px) {
   /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
-  .dashboard-actions {
+  .dashboard-actions , .dashboard-table {
     width: 80%;
   }
 }
 @media (min-width: 641px) {
   /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
-  .dashboard-actions {
+  .dashboard-actions , .dashboard-table{
     width: 70%;
   }
 }
 
 @media (min-width: 961px) {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
-  .dashboard-actions {
+  .dashboard-actions , .dashboard-table {
     width: 60%;
   }
 }
 @media (min-width: 1025px) {
   /* big landscape tablets, laptops, and desktops */
-  .dashboard-actions {
+  .dashboard-actions , .dashboard-table {
     width: 50%;
   }
 }
 @media (min-width: 1281px) {
   /* hi-res laptops and desktops */
-  .dashboard-actions {
+  .dashboard-actions , .dashboard-table{
     width: 50%;
   }
 }

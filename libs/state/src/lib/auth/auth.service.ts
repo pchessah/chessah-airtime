@@ -1,37 +1,37 @@
-import { Injectable, NgZone } from "@angular/core";
-
+import { Injectable, DestroyRef, NgZone, inject } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from "@angular/fire/compat/firestore";
 import { Router } from "@angular/router";
-import { IUser } from "libs/interfaces/src/public-api";
 import { Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
+import { IUser } from "libs/interfaces/src/public-api";
 
 @Injectable({ providedIn: "root" })
 
 export class AuthService {
   userData: any; // Save logged in user data
+  destroyRef = inject(DestroyRef);
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
-    /* Saving user data in localstorage when 
-    logged in and setting up null when logged out */
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem("user", JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem("user")!);
-      } else {
-        localStorage.setItem("user", "null");
-        JSON.parse(localStorage.getItem("user")!);
-      }
-    });
+    // /* Saving user data in localstorage when 
+    // logged in and setting up null when logged out */
+    // this.afAuth.authState.subscribe((user) => {
+    //   if (user) {
+    //     this.userData = user;
+    //     localStorage.setItem("user", JSON.stringify(this.userData));
+    //     JSON.parse(localStorage.getItem("user")!);
+    //   } else {
+    //     localStorage.setItem("user", "null");
+    //     JSON.parse(localStorage.getItem("user")!);
+    //   }
+    // });
   }
 
   addUserToLocalStorage(user:any){
@@ -55,12 +55,7 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            this.addUserToLocalStorage(user)
-            this.router.navigateByUrl(`pages/dashboard`);
-          }
-        });
+       this._signInSetup();
       })
       .catch((error) => {
         window.alert(error.message);
@@ -80,6 +75,15 @@ export class AuthService {
       .catch((error) => {
         window.alert(error.message);
       });
+  }
+
+  private _signInSetup(){
+    return this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.addUserToLocalStorage(user)
+        this.router.navigateByUrl(`pages/dashboard`);
+      }
+    });
   }
 
   // Returns true when user is looged in and email is verified
@@ -113,6 +117,13 @@ export class AuthService {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem("user");
       this.router.navigate(["pages/login"]);
+    });
+  }
+
+  destroy() {
+    this.destroyRef.onDestroy(() => {
+      this._signInSetup().unsubscribe();
+      debugger
     });
   }
 }
