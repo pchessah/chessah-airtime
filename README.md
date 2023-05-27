@@ -1,4 +1,4 @@
-# ChessahAirtime
+# Chessah Money Transfer Test
 
 This project was is a simulation for making money transfers
 
