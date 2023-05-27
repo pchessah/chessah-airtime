@@ -46,6 +46,10 @@ export class AuthService {
     }));
   }
 
+  getUsers(): Observable<any> {
+    return this.afs.collection(`users`).valueChanges();
+  }
+
   // Sign in with email/password
   signIn(email: string, password: string) {
     return this.afAuth

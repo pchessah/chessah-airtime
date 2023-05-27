@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from '../auth/auth.service';
 import { filter, switchMap } from 'rxjs/operators';
 import { ITopup } from 'libs/interfaces/src/lib/transfers/topup.interface';
+import { IUser } from 'libs/interfaces/src/public-api';
 
 @Injectable({providedIn: 'root'})
 
@@ -13,9 +14,7 @@ export class TopUpService {
   getAmountOfUser(){
     return this._authService.userAuthStatus().pipe(filter(user => !!user),switchMap(user => {
       return this.db.collection(`users/${user?.uid}/topups`).valueChanges();
-    }))
-
-   
+    }));
   }
 
   topUpAmountOfUser(amount:number){
@@ -26,6 +25,14 @@ export class TopUpService {
       }
       return this.db.collection(`users/${user?.uid}/topups`).add(topUp);
     }))
+  }
+
+  topUpAmountOfOtherUser(user:IUser, amount:number) {
+    const topUp:ITopup = {
+      amount: amount,
+      time: new Date()
+    }
+    return this.db.collection(`users/${user?.uid}/topups`).add(topUp);
   }
   
 }

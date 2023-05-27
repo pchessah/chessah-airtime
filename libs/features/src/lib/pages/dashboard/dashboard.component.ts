@@ -6,6 +6,7 @@ import { SubSink } from 'subsink';
 import { TopUpService } from 'libs/state/src/lib/topup/topup.service';
 import { Observable } from 'rxjs';
 import { ITopup } from 'libs/interfaces/src/lib/transfers/topup.interface';
+import { TransfersService } from 'libs/state/src/lib/transfers/transfers.service';
 
 @Component({
   selector: 'lib-dashboard',
@@ -20,6 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   topUps:ITopup[] = [];
 
   constructor(private _dialog:MatDialog,
+              private _transfersService: TransfersService,
               private _topUpservice:TopUpService){ }
 
   ngOnInit(): void {
@@ -31,12 +33,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }))
   }
 
-
-  openDialog(type: 'topup' | 'makeTransfer'){
+  openDialog(type: 'topup' | 'makeTransfer' , total: number = 0){
     const ref = this._dialog.open(AmountFormComponent, {
       width: '550px',
       maxWidth: '95vw',
-      data:{type: type},
+      data:{type: type, total:total},
       disableClose: true
     });
 
@@ -44,15 +45,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ref.afterClosed().pipe(filter(res => !!res)).subscribe(data =>{
           if(type == "topup"){
             this._topUp(data);
+          } else if(type =="makeTransfer") {
+            this._makeTransfer(data);
           }
         });
   }
 
+  private _makeTransfer(data:{phone:number, email:string, amount:number}){
+    this.isLoading = true;
+    this._sbs.sink = 
+        this._transfersService.doTransfer(data.amount, {phone:data.phone, email:data.email}).subscribe(res =>{
+          this.isLoading = false;
+        })
+  }
+
   private _topUp(data:{phone:number, amount:number}){
-    this.isLoading = false;
-    this._topUpservice.topUpAmountOfUser(data.amount).subscribe(res =>{
-      this.isLoading = true;
-    });
+    this.isLoading = true;
+    this._sbs.sink = 
+      this._topUpservice.topUpAmountOfUser(data.amount).subscribe(res =>{
+        this.isLoading = false;
+      });
   }
 
   ngOnDestroy(): void {

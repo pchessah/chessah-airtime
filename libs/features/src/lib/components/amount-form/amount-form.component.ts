@@ -2,6 +2,7 @@ import { Component, Inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { AuthService } from "libs/state/src/lib/auth/auth.service";
+import { filter, switchMap } from "rxjs/operators";
 import { SubSink } from "subsink";
 
 @Component({
@@ -17,20 +18,26 @@ export class AmountFormComponent {
   transferMode: "email" | "phone" = "phone";
   amountForm!: FormGroup;
   currentUser: any;
+  total: number = 0;
+  cannotMakeTransfer: boolean = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) data: { type: "topup" | "makeTransfer" },
+    @Inject(MAT_DIALOG_DATA) data: { type: "topup" | "makeTransfer", total:number },
     private _authService: AuthService,
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<AmountFormComponent>
   ) {
     this._sbs.sink = 
-        this._authService.userAuthStatus().subscribe(user =>{
+        this._authService.userAuthStatus().pipe(filter(res => !!res),switchMap(user =>{
           this.currentUser = user;
           this.type = data.type;
+          this.total = data.total;
           this._setUpForm(data.type);
           this.isLoading = false;
-        });
+          return this.amountForm.valueChanges
+        })).subscribe(formVals => {
+          this.cannotMakeTransfer = (formVals.amount > this.total) && this.type ==="makeTransfer";
+        })
   }
 
   private _setUpForm(type: "topup" | "makeTransfer") {
@@ -56,7 +63,6 @@ export class AmountFormComponent {
         ],
       });
       this._updateValidators(this.transferMode);
-   
     }
   }
 
@@ -86,7 +92,7 @@ export class AmountFormComponent {
 
     this.amountForm.controls["phone"].reset();
     this.amountForm.controls["phone"].updateValueAndValidity();
-    
+
     this.amountForm.updateValueAndValidity();
   }
 

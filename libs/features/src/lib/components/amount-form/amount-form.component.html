@@ -22,7 +22,7 @@
     </section>
   
     <section *ngIf="transferMode === 'phone' || type === 'topup'" class="form-field-container">
-      <mat-label>Phone Number*</mat-label>
+      <mat-label> {{type === 'topup' ? 'Phone Number*' : 'Recepient Phone*'}}</mat-label>
       <mat-form-field appearance="outline">
         <input type="number" matInput placeholder="0702123456" formControlName="phone" [readonly]=" type === 'topup'">
       </mat-form-field>
@@ -37,11 +37,11 @@
   
     <div class="btn-container">
       <button (click)="close()"mat-stroked-button color="warn">Cancel</button>
-      <button (click)="close(amountForm.value)" [disabled]="amountForm.invalid" mat-raised-button color="primary">Submit</button>
+      <button (click)="close(amountForm.value)" [disabled]="amountForm.invalid || cannotMakeTransfer" mat-raised-button color="primary">Submit</button>
     </div>
 
-    
-    
+    <span class="canntMakeTransfer" *ngIf="cannotMakeTransfer"> ⛔️Amount excedes account, cannot make transfer</span>
+
   </div>
 </ng-container>
 

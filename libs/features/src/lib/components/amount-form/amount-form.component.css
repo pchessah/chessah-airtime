@@ -40,3 +40,9 @@ img{
   right: 20px;
   top: 20px;
 }
+
+.canntMakeTransfer{
+  color:red;
+  font-size: 10px;
+  font-weight: bold;
+}
