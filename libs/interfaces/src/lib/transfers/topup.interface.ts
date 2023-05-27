@@ -1,4 +1,5 @@
 export interface ITopup{
   amount:number;
-  time:Date;
+  timeStamp:Date;
+  id:string;
 }

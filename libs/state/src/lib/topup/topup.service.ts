@@ -21,18 +21,26 @@ export class TopUpService {
     return this._authService.userAuthStatus().pipe(filter(user => !!user),switchMap(user => {
       const topUp:ITopup = {
         amount: amount,
-        time: new Date()
+        timeStamp: new Date(),
+        id:String(new Date().getTime())
       }
-      return this.db.collection(`users/${user?.uid}/topups`).add(topUp);
+      return this._addTopUpToDb(user, topUp);
     }))
   }
 
   topUpAmountOfOtherUser(user:IUser, amount:number) {
     const topUp:ITopup = {
       amount: amount,
-      time: new Date()
+      timeStamp: new Date(),
+      id:String(new Date().getTime())
     }
-    return this.db.collection(`users/${user?.uid}/topups`).add(topUp);
+    return this._addTopUpToDb(user, topUp);
+  }
+
+  private _addTopUpToDb(user:IUser, topUp:ITopup){
+    return this.db.collection(`users/${user?.uid}/topups`).doc(topUp.id).set(topUp)
   }
   
 }
+
+

@@ -23,23 +23,33 @@ export class AmountFormComponent {
   sameUserError: boolean = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) data: { type: "topup" | "makeTransfer", total:number },
+    @Inject(MAT_DIALOG_DATA)
+    data: { type: "topup" | "makeTransfer"; total: number },
     private _authService: AuthService,
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<AmountFormComponent>
   ) {
-    this._sbs.sink = 
-        this._authService.userAuthStatus().pipe(filter(res => !!res),switchMap(user =>{
+    this._sbs.sink = this._authService
+      .userAuthStatus()
+      .pipe(
+        filter((res) => !!res),
+        switchMap((user) => {
           this.currentUser = user;
           this.type = data.type;
           this.total = data.total;
           this._setUpForm(data.type);
           this.isLoading = false;
-          return this.amountForm.valueChanges
-        })).subscribe(formVals => {
-          this.cannotMakeTransfer = (formVals.amount > this.total) && this.type ==="makeTransfer";
-          this.sameUserError = formVals.phone === this.currentUser.phone || formVals.email === this.currentUser.email
+          return this.amountForm.valueChanges;
         })
+      )
+      .subscribe((formVals) => {
+        this.cannotMakeTransfer =
+          formVals.amount > this.total && this.type === "makeTransfer";
+        this.sameUserError =
+          (formVals.phone === this.currentUser.phone ||
+            formVals.email === this.currentUser.email) &&
+          this.type === "makeTransfer";
+      });
   }
 
   private _setUpForm(type: "topup" | "makeTransfer") {
@@ -49,7 +59,6 @@ export class AmountFormComponent {
         phone: [this.currentUser.phone, Validators.required],
         amount: ["", Validators.required],
       });
-     
     } else if (type === "makeTransfer") {
       this.title = "Make Transfer";
       this.amountForm = this._fb.group({
