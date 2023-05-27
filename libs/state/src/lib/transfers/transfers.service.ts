@@ -7,7 +7,6 @@ import { IUser } from "libs/interfaces/src/public-api";
 import { combineLatest } from "rxjs";
 
 @Injectable({ providedIn: "root" })
-
 export class TransfersService {
   constructor(
     private db: AngularFirestore,
@@ -17,13 +16,14 @@ export class TransfersService {
 
   doTransfer(amount: number, recepient: { phone: number; email: string }) {
     return this._authService.getUsers().pipe(
+      filter((res) => !!res),
       map((users) => {
         const user = users.find(
           (u: IUser) =>
             u.email === recepient.email || u.phone === recepient.phone
         );
-        if(!user){
-          window.alert("User does not exist, cannot make transfer.")
+        if (!user) {
+          window.alert("User does not exist, cannot make transfer.");
           return;
         }
         return user;

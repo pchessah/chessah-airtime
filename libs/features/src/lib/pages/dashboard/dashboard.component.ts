@@ -52,10 +52,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private _makeTransfer(data:{phone:number, email:string, amount:number}){
-    this.isLoading = true;
     this._sbs.sink = 
         this._transfersService.doTransfer(data.amount, {phone:data.phone, email:data.email}).subscribe(res =>{
-          this.isLoading = false;
         })
   }
 

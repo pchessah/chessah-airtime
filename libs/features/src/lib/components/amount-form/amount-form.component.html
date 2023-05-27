@@ -37,10 +37,12 @@
   
     <div class="btn-container">
       <button (click)="close()"mat-stroked-button color="warn">Cancel</button>
-      <button (click)="close(amountForm.value)" [disabled]="amountForm.invalid || cannotMakeTransfer" mat-raised-button color="primary">Submit</button>
+      <button (click)="close(amountForm.value)" [disabled]="amountForm.invalid || cannotMakeTransfer || sameUserError" mat-raised-button color="primary">Submit</button>
     </div>
 
-    <span class="canntMakeTransfer" *ngIf="cannotMakeTransfer"> ⛔️Amount excedes account, cannot make transfer</span>
+    <span class="canntMakeTransfer" *ngIf="cannotMakeTransfer"> ⛔️ Amount excedes account, cannot make transfer.</span>
+
+    <span class="canntMakeTransfer" *ngIf="sameUserError"> ⛔️ Cannot send money to yourself.</span>
 
   </div>
 </ng-container>

@@ -20,6 +20,7 @@ export class AmountFormComponent {
   currentUser: any;
   total: number = 0;
   cannotMakeTransfer: boolean = false;
+  sameUserError: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: { type: "topup" | "makeTransfer", total:number },
@@ -37,6 +38,7 @@ export class AmountFormComponent {
           return this.amountForm.valueChanges
         })).subscribe(formVals => {
           this.cannotMakeTransfer = (formVals.amount > this.total) && this.type ==="makeTransfer";
+          this.sameUserError = formVals.phone === this.currentUser.phone || formVals.email === this.currentUser.email
         })
   }
 
