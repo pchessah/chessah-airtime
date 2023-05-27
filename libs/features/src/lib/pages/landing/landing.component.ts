@@ -16,8 +16,9 @@ export class LandingComponent implements OnInit, OnDestroy {
   constructor(private _router: Router, private _authService: AuthService) {}
 
   ngOnInit(): void {
+    
     this._sbs.sink = this._authService.userAuthStatus().subscribe((user) => {
-      this.isLoggedIn = user.email.length > 0;
+      this.isLoggedIn = !!user;
       this.isLoading = false;
     });
   }
