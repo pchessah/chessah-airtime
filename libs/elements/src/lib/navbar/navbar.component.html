@@ -1,6 +1,12 @@
 <mat-toolbar color="primary">
   <span class="logo-container" (click)="goTo('')"><img  class="logo" src="assets/mpesa.png" alt="mpesa-logo" /></span>
-  <div class="action">
-    <button (click)="goTo('login')"  mat-raised-button class="login">LogIn</button>
+  <div class="action" *ngIf="!isLoading else loadingTemplate">
+    <button *ngIf="!userIsLoggedIn" (click)="goTo('login')"  mat-raised-button class="login">LogIn</button>
+    <button *ngIf="userIsLoggedIn" (click)="logOut()"  mat-raised-button class="login">Logout</button>
   </div>
 </mat-toolbar>
+
+<ng-template #loadingTemplate>
+  <button mat-raised-button class="login"><mat-spinner diameter="15"></mat-spinner></button>
+  
+</ng-template>

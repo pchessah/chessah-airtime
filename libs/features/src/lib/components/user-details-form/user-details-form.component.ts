@@ -10,7 +10,8 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { AuthService } from "libs/state/src/lib/auth/auth.service";
+import { SubSink } from "subsink";
 
 @Component({
   selector: "lib-user-details-form",
@@ -18,38 +19,47 @@ import { Subscription } from "rxjs";
   styleUrls: ["./user-details-form.component.css"],
 })
 export class UserDetailsFormComponent implements OnChanges, OnInit, OnDestroy {
+  private _sbs = new SubSink();
   @Input({ required: true }) sectionUsed: "signup" | "login" = "signup";
   @Output() submitFormEvent: EventEmitter<any> = new EventEmitter();
 
   title: "Sign Up" | "Log In" = "Sign Up";
   userDetailsForm!: FormGroup;
-  userDetailsFormValue$!: Subscription;
   passwordErr: string = "";
+  userIsLoggedIn: boolean = false;
+  isLoading:boolean = true;
 
-  constructor(private _router: Router, private _fb: FormBuilder) {
+  constructor(
+    private _router: Router,
+    private _fb: FormBuilder,
+    private _authService: AuthService
+  ) {
     this._setUpForm(this.sectionUsed);
   }
 
   ngOnInit(): void {
-    this.userDetailsFormValue$ = this.userDetailsForm.valueChanges.subscribe(
-      (vals) => {
-        if (vals.password.length > 0 && this.sectionUsed == "signup") {
-          if (vals.password !== vals.password2) {
-            this.userDetailsForm.controls["password"].setErrors({
-              incorrect: true,
-            });
-            this.userDetailsForm.controls["password2"].setErrors({
-              incorrect: true,
-            });
-            this.passwordErr = "Passwords do not match.";
-          } else {
-            this.userDetailsForm.controls["password"].setErrors(null);
-            this.userDetailsForm.controls["password2"].setErrors(null);
-            this.passwordErr = "";
-          }
+    this._sbs.sink = this._authService.userAuthStatus().subscribe((user) => {
+      this.userIsLoggedIn = !!user;
+      this.isLoading = false;
+    });
+
+    this._sbs.sink = this.userDetailsForm.valueChanges.subscribe((vals) => {
+      if (vals.password.length > 0 && this.sectionUsed == "signup") {
+        if (vals.password !== vals.password2) {
+          this.userDetailsForm.controls["password"].setErrors({
+            incorrect: true,
+          });
+          this.userDetailsForm.controls["password2"].setErrors({
+            incorrect: true,
+          });
+          this.passwordErr = "Passwords do not match.";
+        } else {
+          this.userDetailsForm.controls["password"].setErrors(null);
+          this.userDetailsForm.controls["password2"].setErrors(null);
+          this.passwordErr = "";
         }
       }
-    );
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -57,6 +67,10 @@ export class UserDetailsFormComponent implements OnChanges, OnInit, OnDestroy {
       this.sectionUsed = changes["sectionUsed"].currentValue;
       this._setUpForm(this.sectionUsed);
     }
+  }
+
+  logOut() {
+    this._authService.signOut();
   }
 
   private _setUpForm(sectionUsed: "signup" | "login") {
@@ -101,6 +115,6 @@ export class UserDetailsFormComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userDetailsFormValue$.unsubscribe();
+    this._sbs.unsubscribe();
   }
 }

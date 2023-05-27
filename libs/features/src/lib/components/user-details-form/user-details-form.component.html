@@ -1,58 +1,74 @@
 <div class="page-container">
-  <div [formGroup]="userDetailsForm"  class="form-container">
-    <span> <img src="assets/login.svg" alt="auth" /></span>
-    <span class="title">{{title}}</span>
+  <div *ngIf="!isLoading else loading" [formGroup]="userDetailsForm"  class="form-container">
+    <ng-container *ngIf="!userIsLoggedIn else userIsLoggedInTemplate">
+      <span> <img src="assets/login.svg" alt="auth" /></span>
+      <span class="title">{{title}}</span>
+      <section class="form-field-container">
+  
+        <mat-label>Email*</mat-label>
+        <mat-form-field appearance="outline">
+          <input type="email" matInput placeholder="john@mail.com" formControlName="email">
+        </mat-form-field>
+        <span *ngIf="fieldIsInvalid('email')" class="error">Email is required/Invalid</span>
+      </section>
+  
+      <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
+        <mat-label>Phone Number*</mat-label>
+        <mat-form-field appearance="outline">
+          <input type="number" matInput placeholder="0702123456" formControlName="phone">
+        </mat-form-field>
+        <span *ngIf="fieldIsInvalid('phone')" class="error">Phone number is required</span>
+      </section>
+  
+      <section class="form-field-container">
+        <mat-label>Password*</mat-label>
+        <mat-form-field appearance="outline">
+          <input type="password" matInput placeholder="***********" formControlName="password">
+        </mat-form-field>
+        <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
+        <span *ngIf="fieldIsInvalid('password')" class="error-2">Password is invalid</span>
+      </section>
+  
+  
+      <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
+        <mat-label>Confirm Password*</mat-label>
+        <mat-form-field appearance="outline">
+          <input type="password" matInput placeholder="***********" formControlName="password2">
+        </mat-form-field>
+        <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
+        <span *ngIf="fieldIsInvalid('password2')" class="error-2">Confirm password is invalid</span>
+      </section>
+  
+      <button [disabled]="userDetailsForm.invalid" (click)="submitForm()" color="primary" mat-raised-button>{{title}}</button>
+  
+      <span class="or">Or</span>
+  
+      <span class="alternative-text">
+        <ng-container *ngIf="sectionUsed === 'signup'">
+          Log in <span (click)="goTo('login')">Here</span>
+        </ng-container>
+  
+        <ng-container *ngIf="sectionUsed === 'login'">
+          Not a member yet? Sign up <span (click)="goTo('signup')" >Here</span>
+        </ng-container>
+  
+      </span>
+    </ng-container>
 
-    <section class="form-field-container">
-
-      <mat-label>Email*</mat-label>
-      <mat-form-field appearance="outline">
-        <input type="email" matInput placeholder="john@mail.com" formControlName="email">
-      </mat-form-field>
-      <span *ngIf="fieldIsInvalid('email')" class="error">Email is required/Invalid</span>
-    </section>
-
-    <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
-      <mat-label>Phone Number*</mat-label>
-      <mat-form-field appearance="outline">
-        <input type="number" matInput placeholder="0702123456" formControlName="phone">
-      </mat-form-field>
-      <span *ngIf="fieldIsInvalid('phone')" class="error">Phone number is required</span>
-    </section>
-
-    <section class="form-field-container">
-      <mat-label>Password*</mat-label>
-      <mat-form-field appearance="outline">
-        <input type="password" matInput placeholder="***********" formControlName="password">
-      </mat-form-field>
-      <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
-      <span *ngIf="fieldIsInvalid('password')" class="error-2">Password is invalid</span>
-    </section>
-
-
-    <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
-      <mat-label>Confirm Password*</mat-label>
-      <mat-form-field appearance="outline">
-        <input type="password" matInput placeholder="***********" formControlName="password2">
-      </mat-form-field>
-      <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
-      <span *ngIf="fieldIsInvalid('password2')" class="error-2">Confirm password is invalid</span>
-    </section>
-
-    <button [disabled]="userDetailsForm.invalid" (click)="submitForm()" color="primary" mat-raised-button>{{title}}</button>
-
-    <span class="or">Or</span>
-
-    <span class="alternative-text">
-      <ng-container *ngIf="sectionUsed === 'signup'">
-        Log in <span (click)="goTo('login')">Here</span>
-      </ng-container>
-
-      <ng-container *ngIf="sectionUsed === 'login'">
-        Not a member yet? Sign up <span (click)="goTo('signup')" >Here</span>
-      </ng-container>
-
-    </span>
   </div>
 
 </div>
+
+<ng-template #userIsLoggedInTemplate>
+  <div class="loggedIn">
+    <img src="assets/logged-in.svg"  alt="logged-in" />
+    <h3>You are already logged in</h3>
+    <button (click)="logOut()" color="primary" mat-raised-button>Log Out</button>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner diameter="25"></mat-spinner>
+  </div>
+</ng-template>

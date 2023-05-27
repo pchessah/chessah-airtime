@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'libs/state/src/lib/auth/auth.service';
 
 @Component({
   selector: 'lib-signup',
@@ -8,12 +9,11 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent {
   
-  constructor(private _router:Router){
+  constructor(private _authService:AuthService){
   }
 
   submitForm(data:any){
-    debugger
-    this._router.navigateByUrl(`pages/dashboard`);
+    this._authService.signUp(data.email, data.password)
   }
   
 
