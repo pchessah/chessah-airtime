@@ -13,7 +13,7 @@ export class SignupComponent {
   }
 
   submitForm(data:any){
-    this._authService.signUp(data.email, data.password)
+    this._authService.signUp(data.email, data.password, data.phone)
   }
   
 

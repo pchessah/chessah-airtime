@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'libs/state/src/lib/auth/auth.service';
 
 @Component({
   selector: 'lib-login',
@@ -7,13 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  constructor(private _router:Router){
+  constructor(private _authService: AuthService){
 
   }
 
   submitForm(data:any){
-    debugger
-    this._router.navigateByUrl(`pages/dashboard`);
+    this._authService.signIn(data.email, data.password);
   }
 
 }

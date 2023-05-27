@@ -4,10 +4,11 @@ import { LandingComponent } from "./pages/landing/landing.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { SignupComponent } from "./pages/signup/signup.component";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
+import { loggedInGuardGuard } from "libs/elements/src/lib/guards/logged-in-guard.guard";
 
 const routes: Routes = [
   { path: "", component: LandingComponent },
-  { path: "dashboard", component:DashboardComponent},
+  { path: "dashboard", component:DashboardComponent, canActivate:[loggedInGuardGuard]},
   { path: "landing", component: LandingComponent },
   { path: "login", component: LoginComponent },
   { path: "signup", component: SignupComponent },

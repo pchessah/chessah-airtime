@@ -1,6 +1,8 @@
 import { Component, Inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { AuthService } from "libs/state/src/lib/auth/auth.service";
+import { SubSink } from "subsink";
 
 @Component({
   selector: "lib-amount-form",
@@ -8,35 +10,44 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
   styleUrls: ["./amount-form.component.css"],
 })
 export class AmountFormComponent {
-  type: "topup" | "makeTransfer";
+  isLoading = true;
+  private _sbs = new SubSink();
+  type: "topup" | "makeTransfer" = "topup";
   title: string = "Top Up Account";
   transferMode: "email" | "phone" = "phone";
   amountForm!: FormGroup;
+  currentUser: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: { type: "topup" | "makeTransfer" },
+    private _authService: AuthService,
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<AmountFormComponent>
   ) {
-    this.type = data.type;
-    this._setUpForm(data.type);
+    this._sbs.sink = 
+        this._authService.userAuthStatus().subscribe(user =>{
+          this.currentUser = user;
+          this.type = data.type;
+          this._setUpForm(data.type);
+          this.isLoading = false;
+        });
   }
 
   private _setUpForm(type: "topup" | "makeTransfer") {
     if (type === "topup") {
       this.title = "Top Up Account";
       this.amountForm = this._fb.group({
-        phone: ["", Validators.required],
+        phone: [this.currentUser.phone, Validators.required],
         amount: ["", Validators.required],
       });
-    
+     
     } else if (type === "makeTransfer") {
       this.title = "Make Transfer";
       this.amountForm = this._fb.group({
-        phone: ["", Validators.required],
+        phone: [this.currentUser.phone, Validators.required],
         amount: ["", Validators.required],
         email: [
-          "",
+          this.currentUser.email,
           [
             Validators.required,
             Validators.email,
@@ -71,9 +82,11 @@ export class AmountFormComponent {
       this.amountForm.controls["email"].clearValidators();
     }
     this.amountForm.controls["email"].reset();
-    this.amountForm.controls["email"].reset();
     this.amountForm.controls["email"].updateValueAndValidity();
+
+    this.amountForm.controls["phone"].reset();
     this.amountForm.controls["phone"].updateValueAndValidity();
+    
     this.amountForm.updateValueAndValidity();
   }
 
