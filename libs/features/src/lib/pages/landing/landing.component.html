@@ -5,10 +5,24 @@
   <section class="welcome-section">
     <img src="assets/mpesa.png" alt="mpesa-logo" />
     <span class="welcome-text">
-      Welcome To Your One Stop shop to transfer Airtime
+      Welcome To Your One Stop shop to transfer Money
     </span>
-    <button (click)="goTo('signup')"color="primary" mat-raised-button>Get Started</button>
-    <span class="or">Or</span>
-    <span (click)="goTo('login')" class="login-text">Log In here</span>
+    <ng-container *ngIf="!isLoading else loading">
+      <ng-container *ngIf="!isLoggedIn else goToDashBoardTemplate">
+        <button (click)="goTo('signup')"color="primary" mat-raised-button>Get Started</button>
+        <span class="or">Or</span>
+        <span (click)="goTo('login')" class="login-text">Log In here</span>
+      </ng-container>
+
+    </ng-container>
+
   </section>
 </div>
+
+<ng-template #goToDashBoardTemplate>
+  <button (click)="goTo('dashboard')"color="primary" mat-raised-button>Go To Dashboard</button>
+</ng-template>
+
+<ng-template #loading>
+  <mat-spinner [diameter]="15"></mat-spinner>
+</ng-template>
