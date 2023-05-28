@@ -15,12 +15,15 @@ export class TransfersService {
     private _topUpservice: TopUpService
   ) {}
 
+
+//Get transfers a user has made
   getTransfers(){
     return this._authService.userAuthStatus().pipe(switchMap(user =>{
       return  this.db.collection(`users/${user?.uid}/transfers`).valueChanges();
     }))
   }
 
+  //Returns a list of all users
   getUsers (){
     return this._authService.getUsers()
   }
@@ -30,7 +33,7 @@ export class TransfersService {
     return this._authService.getUsers().pipe(
       filter((res) => !!res),
 
-      //Find recepient using phone or email
+      //Find recepient using phone or email ("Check maybe unnecessary")
       map((users) => {
         if(users?.length > 0) {
           const user = users.find(

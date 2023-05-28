@@ -11,12 +11,15 @@ export class TopUpService {
 
   constructor(private db: AngularFirestore, private _authService:AuthService) { }
 
+  //Gets the list of topups of the user, reduces them total
+  //Doing this to account for -topup which simulates money transfer;
   getAmountOfUser(){
     return this._authService.userAuthStatus().pipe(filter(user => !!user),switchMap(user => {
       return this.db.collection(`users/${user?.uid}/topups`).valueChanges();
     }));
   }
 
+  //Top up current user
   topUpAmountOfUser(amount:number){
     return this._authService.userAuthStatus().pipe(filter(user => !!user),switchMap(user => {
       const topUp:ITopup = {
@@ -28,6 +31,7 @@ export class TopUpService {
     }))
   }
 
+  //Transfer of money functionality
   topUpAmountOfOtherUser(user:IUser, amount:number) {
     const topUp:ITopup = {
       amount: amount,

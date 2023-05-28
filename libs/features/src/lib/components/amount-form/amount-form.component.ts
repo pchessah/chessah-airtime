@@ -31,6 +31,7 @@ export class AmountFormComponent {
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<AmountFormComponent>
   ) {
+    //Load currently logged in user
     this._sbs.sink = this._authService
       .userAuthStatus()
       .pipe(
@@ -46,6 +47,7 @@ export class AmountFormComponent {
         })
       )
       .subscribe((formVals) => {
+        //Check for errors if user is trying to send to themselves/does not have enough money
         this.cannotMakeTransfer =
           formVals.amount > this.total && this.type === "makeTransfer";
         this.sameUserError =
@@ -89,6 +91,8 @@ export class AmountFormComponent {
     return "";
   }
 
+
+  //Update form validators when user sending money via email/phone
   private _updateValidators(transferMode: "email" | "phone") {
     if (transferMode === "email") {
       this.amountForm.controls["email"].setValidators([
@@ -117,6 +121,7 @@ export class AmountFormComponent {
 
   close(data = null) {
     if(!!data && this.type == "makeTransfer"){
+      //Checks if recepient exists/ if not do not close modal
       const user = this.users.find(
         (u: IUser) =>
           u.email === (data as any).email || u.phone === (data as any).phone
