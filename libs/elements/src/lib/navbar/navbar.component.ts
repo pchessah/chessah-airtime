@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthService } from "libs/state/src/lib/auth/auth.service";
+import { AuthHttpService } from "libs/state/src/lib/auth/auth.http.service";
 
 import { SubSink } from "subsink";
 
@@ -15,13 +15,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userIsLoggedIn: boolean = false;
   isLoading:boolean = true;
 
-  constructor(private _router: Router, private _auth: AuthService) {}
+  constructor(private _router: Router, private _auth: AuthHttpService) {}
 
   ngOnInit(): void {
-    this._sbs.sink = this._auth.userAuthStatus().subscribe((user) => {
-      this.userIsLoggedIn = !!user;
-      this.isLoading = false;
-    });
+    this.userIsLoggedIn = this._auth.isLoggedIn();
+    this.isLoading = false;
   }
 
   goTo(page: string) {
@@ -31,7 +29,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    this._auth.signOut();
+    this._auth.logOut();
   }
 
   ngOnDestroy(): void {

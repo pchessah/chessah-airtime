@@ -23,6 +23,9 @@ export class UserDetailsFormComponent implements OnChanges, OnInit, OnDestroy {
   @Input({ required: true }) sectionUsed: "signup" | "login" = "signup";
   @Output() submitFormEvent: EventEmitter<any> = new EventEmitter();
 
+  currencies: {currency:string, value:number}[] = [{currency: "USD", value:100}, {currency: "EUR", value:200}];
+  selectedCurrency:  {currency:string, value:number} = null as any;
+
   title: "Sign Up" | "Log In" = "Sign Up";
   userDetailsForm!: FormGroup;
   passwordErr: string = "";
@@ -45,17 +48,17 @@ export class UserDetailsFormComponent implements OnChanges, OnInit, OnDestroy {
 
     this._sbs.sink = this.userDetailsForm.valueChanges.subscribe((vals) => {
       if (vals.password.length > 0 && this.sectionUsed == "signup") {
-        if (vals.password !== vals.password2) {
+        if (vals.password !== vals.password_confirmation) {
           this.userDetailsForm.controls["password"].setErrors({
             incorrect: true,
           });
-          this.userDetailsForm.controls["password2"].setErrors({
+          this.userDetailsForm.controls["password_confirmation"].setErrors({
             incorrect: true,
           });
           this.passwordErr = "Passwords do not match.";
         } else {
           this.userDetailsForm.controls["password"].setErrors(null);
-          this.userDetailsForm.controls["password2"].setErrors(null);
+          this.userDetailsForm.controls["password_confirmation"].setErrors(null);
           this.passwordErr = "";
         }
       }
@@ -85,9 +88,13 @@ export class UserDetailsFormComponent implements OnChanges, OnInit, OnDestroy {
             Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,8}$"),
           ],
         ],
-        phone: ["", [Validators.required]],
+        phone_number: ["", [Validators.required]],
         password: ["", [Validators.required]],
-        password2: ["", [Validators.required]],
+        password_confirmation: ["", [Validators.required]],
+        currency: ["", [Validators.required]],
+        first_name: ["", [Validators.required]],
+        last_name: ["", [Validators.required]],
+
       });
     } else if (sectionUsed === "login") {
       this.title = "Log In";

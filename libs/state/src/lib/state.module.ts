@@ -1,16 +1,18 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { StateComponent } from './state.component';
+
 
 
 
 @NgModule({
   declarations: [
-    StateComponent
+
   ],
   imports: [
+    HttpClientModule,
   ],
   exports: [
-    StateComponent
+
   ]
 })
 export class StateModule { }

@@ -2,25 +2,55 @@
   <div *ngIf="!isLoading else loading" [formGroup]="userDetailsForm"  class="form-container">
     <ng-container *ngIf="!userIsLoggedIn else userIsLoggedInTemplate">
       <span> <img src="assets/login.svg" alt="auth" /></span>
+
       <span class="title">{{title}}</span>
-      <section class="form-field-container">
+      <div class="form-field-container" class="name-row">
+        <section *ngIf="sectionUsed === 'signup'" class="form-field-container name-container">
+          <mat-label>First Name*</mat-label>
+          <mat-form-field appearance="outline">
+            <input type="text" matInput placeholder="John" formControlName="first_name">
+          </mat-form-field>
+          <span *ngIf="fieldIsInvalid('first_name')" class="error">First Name is required</span>
+        </section>
   
+        <section *ngIf="sectionUsed === 'signup'" class="form-field-container name-container">
+          <mat-label>Last Name*</mat-label>
+          <mat-form-field appearance="outline">
+            <input type="text" matInput placeholder="doe" formControlName="last_name">
+          </mat-form-field>
+          <span *ngIf="fieldIsInvalid('last_name')" class="error">Last name is required</span>
+        </section>
+
+      </div>
+      <section class="form-field-container">
         <mat-label>Email*</mat-label>
         <mat-form-field appearance="outline">
           <input type="email" matInput placeholder="john@mail.com" formControlName="email">
         </mat-form-field>
         <span *ngIf="fieldIsInvalid('email')" class="error">Email is required/Invalid</span>
       </section>
+
+      <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
+        <mat-label>currency*</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="currency" name="currency">
+            <mat-option *ngFor="let currency of currencies" [value]="currency.currency">
+              {{currency.currency}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span *ngIf="fieldIsInvalid('last_name')" class="error">Last name is required</span>
+      </section>
   
       <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
         <mat-label>Phone Number*</mat-label>
         <mat-form-field appearance="outline">
-          <input type="number" matInput placeholder="0702123456" formControlName="phone">
+          <input type="number" matInput placeholder="0702123456" formControlName="phone_number">
         </mat-form-field>
         <span *ngIf="fieldIsInvalid('phone')" class="error">Phone number is required</span>
       </section>
   
-      <section class="form-field-container">
+      <section  *ngIf="sectionUsed === 'login'" class="form-field-container">
         <mat-label>Password*</mat-label>
         <mat-form-field appearance="outline">
           <input type="password" matInput placeholder="***********" formControlName="password">
@@ -28,16 +58,31 @@
         <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
         <span *ngIf="fieldIsInvalid('password') && !passwordErr.length" class="error-2">Password is required</span>
       </section>
+
+      <div class="form-field-container" class="name-row" *ngIf="sectionUsed === 'signup'">
+
+        <section class="form-field-container name-container">
+          <mat-label>Password*</mat-label>
+          <mat-form-field appearance="outline">
+            <input type="password" matInput placeholder="***********" formControlName="password">
+          </mat-form-field>
+          <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
+          <span *ngIf="fieldIsInvalid('password') && !passwordErr.length" class="error-2">Password is required</span>
+        </section>
+
+        <section *ngIf="sectionUsed === 'signup'" class="form-field-container name-container">
+          <mat-label>Confirm Password*</mat-label>
+          <mat-form-field appearance="outline">
+            <input type="password" matInput placeholder="***********" formControlName="password_confirmation">
+          </mat-form-field>
+          <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
+          <span *ngIf="fieldIsInvalid('password_confirmation') && !passwordErr.length" class="error-2">Confirm password is required</span>
+        </section>
+
+      </div>
   
   
-      <section *ngIf="sectionUsed === 'signup'" class="form-field-container">
-        <mat-label>Confirm Password*</mat-label>
-        <mat-form-field appearance="outline">
-          <input type="password" matInput placeholder="***********" formControlName="password2">
-        </mat-form-field>
-        <span *ngIf="passwordErr.length" class="error">{{passwordErr}}</span>
-        <span *ngIf="fieldIsInvalid('password2') && !passwordErr.length" class="error-2">Confirm password is required</span>
-      </section>
+  
   
       <button [disabled]="userDetailsForm.invalid" (click)="submitForm()" color="primary" mat-raised-button>{{title}}</button>
   

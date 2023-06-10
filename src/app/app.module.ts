@@ -9,6 +9,7 @@ import { ElementsModule } from 'libs/elements/src/public-api';
 import { environment } from './environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -18,6 +19,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
