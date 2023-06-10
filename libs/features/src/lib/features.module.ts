@@ -9,6 +9,7 @@ import { CommonModule } from "@angular/common";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import { AmountFormComponent } from "./components/amount-form/amount-form.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { WalletComponent } from "./pages/wallet/wallet.component";
 @NgModule({
   declarations: [
     LandingComponent,
@@ -16,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     SignupComponent,
     LoginComponent,
     DashboardComponent,
-    AmountFormComponent
+    AmountFormComponent,
+    WalletComponent
   ],
   imports: [CommonModule, ExternalModule, FeaturesRoutingModule, FormsModule, ReactiveFormsModule],
 
@@ -26,7 +28,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     SignupComponent,
     LoginComponent,
     DashboardComponent,
-    AmountFormComponent
+    AmountFormComponent,
+    WalletComponent
   ],
 })
 export class FeaturesModule {}

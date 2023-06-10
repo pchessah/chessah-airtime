@@ -1,0 +1,21 @@
+<div class="page-container">
+  <span class="animate"> <img src="assets/dashboard.svg" alt="auth" /></span>
+  <span class="title animate">Dashboard</span>
+  <div class="total animate">
+    Your Total: <span  class="amount">Ksh. {{total}}</span>
+  </div>
+  <div class="dashboard-actions animate">
+    
+    <section class="amount-section animate">
+      <button (click)="openDialog('topup')" color="accent" mat-raised-button> Top up
+        Amount</button>
+    </section>
+
+    <section class="make-transfer-section animate">
+      <button (click)="openDialog('makeTransfer', total)" color="primary" mat-raised-button>Make Transfer</button>
+    </section>
+
+  </div>
+
+</div>
+

@@ -45,6 +45,11 @@ export class AuthHttpService {
       });
   }
 
+  getCurrentUser () {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user;
+  }
+
   logOut() {
     localStorage.removeItem('user')
     this._router.navigate(["pages/login"]);

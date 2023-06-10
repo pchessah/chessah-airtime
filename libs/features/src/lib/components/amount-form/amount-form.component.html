@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isLoading else loadingTemplate">
+<ng-container>
 <div [formGroup]="amountForm" class="form-container">
     <img title="image" class="img" [src]="getImageSrc()" [alt]="title" />
     <span (click)="close()" class="close-icon"><mat-icon>cancel</mat-icon></span>

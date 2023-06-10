@@ -2,8 +2,7 @@ import { Component, Inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { IUser } from "libs/interfaces/src/public-api";
-import { AuthService } from "libs/state/src/lib/auth/auth.service";
-import { filter, switchMap } from "rxjs/operators";
+import { AuthHttpService } from "libs/state/src/lib/auth/auth.http.service";
 import { SubSink } from "subsink";
 
 @Component({
@@ -27,26 +26,17 @@ export class AmountFormComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA)
     data: { type: "topup" | "makeTransfer"; total: number, users:IUser[]},
-    private _authService: AuthService,
+    private _authService: AuthHttpService,
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<AmountFormComponent>
   ) {
     //Load currently logged in user
-    this._sbs.sink = this._authService
-      .userAuthStatus()
-      .pipe(
-        filter((res) => !!res),
-        switchMap((user) => {
-          this.currentUser = user;
-          this.type = data.type;
-          this.total = data.total;
-          this.users = data.users;
-          this._setUpForm(data.type);
-          this.isLoading = false;
-          return this.amountForm.valueChanges;
-        })
-      )
-      .subscribe((formVals) => {
+    this.currentUser = this._authService.getCurrentUser();
+    this.type = data.type;
+    this.total = data.total;
+    this.users = data.users;
+    this._setUpForm(data.type);
+      this._sbs.sink = this.amountForm.valueChanges.subscribe((formVals) => {
         //Check for errors if user is trying to send to themselves/does not have enough money
         this.cannotMakeTransfer =
           formVals.amount > this.total && this.type === "makeTransfer";
@@ -61,7 +51,7 @@ export class AmountFormComponent {
     if (type === "topup") {
       this.title = "Top Up Account";
       this.amountForm = this._fb.group({
-        phone: [this.currentUser.phone, Validators.required],
+        phone: [this.currentUser.phone_number, Validators.required],
         amount: ["", Validators.required],
       });
     } else if (type === "makeTransfer") {
